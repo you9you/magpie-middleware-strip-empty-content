@@ -20,5 +20,7 @@ function isEmptyUser(m, protocol) {
   if (c === "" || c == null) return true
   if (!Array.isArray(c)) return false
   if (c.length === 0) return true
+  // Anthropic tool results carry their output inside the block, not in b.text.
+  if (protocol === "anthropic" && c.some((b) => b.type === "tool_result")) return false
   return c.every((b) => !b.text && !b.image_url && !b.inlineData && !b.functionCall && !b.source)
 }
